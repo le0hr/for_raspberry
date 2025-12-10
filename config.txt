@@ -1,0 +1,2 @@
+api_id="Enter your telegram ip here"
+api_hash="Enter your telegram ghash here"
