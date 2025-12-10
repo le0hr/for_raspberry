@@ -1,0 +1,37 @@
+{
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "python": false
+    },
+    "launch": {
+        "configurations": [
+            {
+            "justMyCode": false,
+            "name": "Run",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "python": "${env:virtvenv}/bin/python"
+            }
+        ]
+    },
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "[latex]": {
+        "editor.formatOnPaste": false,
+        "editor.suggestSelection": "recentlyUsedByPrefix"
+    },
+    "python.defaultInterpreterPath": "C:\\Users\\levhr\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+    "files.associations": {
+        "*.py": "python"
+    },
+    "[python]": {
+        
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.defaultColorDecorators": "never",
+        "editor.formatOnType": true,
+        "editor.wordBasedSuggestions": "off"
+    }
+}
