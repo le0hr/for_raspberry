@@ -23,7 +23,7 @@ async def get_shutdown_periods(api_id: int, api_hash: str, source: str, shutdown
         a = r"(?m)^" + re.escape(shutdown_query) + r".*$"
         shutdown_period = re.search(r"(?m)^" + re.escape(shutdown_query) + r".*$", msg.message)
         shutdown_period = [i.split(' - ') for i in shutdown_period.group(0)[4:].split(', ')]
-        yield shutdown_period  # Returns message when asked
+        yield shutdown_period  # Returns message when schedulers updated
     
 
     
