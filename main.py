@@ -29,4 +29,5 @@ async def main():
 
 # TODO:
 # Rewrite display.py for LCD display
-asyncio.run(main())
+if __name__ =="__main__":
+    asyncio.run(main())

@@ -1,6 +1,7 @@
+import adafruit_st7789
 import gpiozero as gp
-import asyncio
 from datetime import datetime as dt
+import asyncio
 
 class Shutdown_timer:
     # Init display object
