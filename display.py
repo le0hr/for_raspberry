@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime as dt
 import asyncio
 
-class Shutdown_timer:
+class ShutdownTimer:
     # Init display object
     def __init__(self) ->None:
         self.serial = spi(
@@ -25,6 +25,8 @@ class Shutdown_timer:
         self.img = Image.new("1", (130, 130), 0)   # 0 = чорний
         self.draw = ImageDraw.Draw(self.img)
         self.font = ImageFont.load_default()
+
+        self.schedule = [['0:00', '0:00']]
                 
     def set_schedule(self, shutdown_schedule:str):
         self.schedule = shutdown_schedule
@@ -62,15 +64,14 @@ class Shutdown_timer:
                 diff_formated = '{0}:{1}:{2}'.format(diff_H, diff_M, diff_S)
                 return diff_formated
 
-    async def display_time_remaining(self, shutdown_schedule:list) ->None:
+    async def display_time_remaining(self) ->None:
         while True:
-            time_remaining = self.time_remaining(shutdown_schedule, self.is_shuted(shutdown_schedule))
+            time_remaining = self.time_remaining(self.schedule, self.is_shuted(self.schedule))
             self.draw.rectangle((0, 0, 129, 129), outline=1)
-            self.draw.text((15, 58), "{0}".format(t), fill=1, font=self.font)
+            self.draw.text((15, 58), "{0}".format(time_remaining), fill=1, font=self.font)
             self.device.display(self.img)
             print(time_remaining)
             await asyncio.sleep(1)
-
 
 
 

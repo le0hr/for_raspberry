@@ -1,4 +1,4 @@
-import messageHandler as mh
+import message_handler as mh
 import asyncio
 import display
 import configparser
@@ -18,17 +18,19 @@ async def main():
     except:
         exit('Wrong config format')
 
-    # Setup raspberry 7-segment multi-display
-    raspberry_display = display.Shutdown_timer()
+    # Setup raspberry lcd display timer
+    shutdown_timer = display.ShutdownTimer()
+
+    # Start timer 
+    asyncio.create_task(shutdown_timer.display_time_remaining())
+
 
     # Request for shutdown scheduler
-    async for shutdown_scheduler in mh.get_shutdown_periods(api_id,api_hash,source,shutdown_query,message_pattern):
-        await raspberry_display.display_time_remaining(shutdown_scheduler)
+    async for shutdown_schedule in mh.get_shutdown_periods(api_id,api_hash,source,shutdown_query,message_pattern):
+        shutdown_timer.set_schedule(shutdown_schedule)
 
 
 
-# TODO:
-# Rewrite display.py for LCD display
-# SPI must be enabled on the raspberry
+
 if __name__ =="__main__":
     asyncio.run(main())

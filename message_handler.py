@@ -19,7 +19,6 @@ async def get_shutdown_periods(api_id: int, api_hash: str, source: str, shutdown
     # Message reader
     while client.is_connected():
         msg = await queue.get()
-        print(msg)
         a = r"(?m)^" + re.escape(shutdown_query) + r".*$"
         shutdown_period = re.search(r"(?m)^" + re.escape(shutdown_query) + r".*$", msg.message)
         shutdown_period = [i.split(' - ') for i in shutdown_period.group(0)[4:].split(', ')]
