@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime as dt
 import asyncio
 
-class ShutdownTimer:
+class OutageTimer:
     # Init display object
     def __init__(self) ->None:
         self.serial = spi(
@@ -28,49 +28,49 @@ class ShutdownTimer:
 
         self.schedule = [['0:00', '0:00']]
                 
-    def set_schedule(self, shutdown_schedule:str):
-        self.schedule = shutdown_schedule
+    def set_schedule(self, outage_schedule:str):
+        self.schedule = outage_schedule
         
     # Сheck if curently in period
     def is_shuted(self, period: str) -> bool:
-        now = dt.now().time()
+        _now = dt.now().time()
         for i in period:
-            start, end = i
+            _start, _end = i
 
-            if start == "24:00":
-                end_time = dt.time(23, 59, 59)
+            if _start == "24:00":
+                _end_time = dt.time(23, 59, 59)
             else:
-                end_time = dt.strptime(end, "%H:%M").time()
+                _end_time = dt.strptime(_end, "%H:%M").time()
                 
-            start_time = dt.strptime(start, "%H:%M").time()
-            if start_time <= now <= end_time:
+            _start_time = dt.strptime(_start, "%H:%M").time()
+            if _start_time <= _now <= _end_time:
                 return True
         return False
 
     # Calculete the remaining time
     def time_remaining(self, period: str, is_shuted: bool) -> int:
         # Supportive variable, which helps to find a time difference
-        dummy_date = dt.date(dt(1,1,1))
-        now = dt.combine(dummy_date, dt.now().time())
+        _dummy_date = dt.date(dt(1,1,1))
+        _now = dt.combine(_dummy_date, dt.now().time())
         for time in period:
-            diff = dt.combine(dummy_date, dt.strptime(time[is_shuted], "%H:%M").time())-now
-            diff = diff.total_seconds()       
-            if diff >0:
+            _diff = dt.combine(_dummy_date, dt.strptime(time[is_shuted], "%H:%M").time())-_now
+            _diff = _diff.total_seconds()       
+            if _diff >0:
                 # Round diff to integer and break down to hours:minutes:seconds format
-                diff = round(diff)
-                diff_H = diff//3600  
-                diff_M = (diff-diff_H*3600)//60
-                diff_S = diff-diff_H*3600-diff_M*60
-                diff_formated = '{0}:{1}:{2}'.format(diff_H, diff_M, diff_S)
-                return diff_formated
+                _diff = round(_diff)
+                _diff_H = _diff//3600  
+                _diff_M = (_diff-_diff_H*3600)//60
+                _diff_S = _diff-_diff_H*3600-_diff_M*60
+                _diff_formated = '{0}:{1}:{2}'.format(_diff_H, _diff_M, _diff_S)
+                return _diff_formated
 
     async def display_time_remaining(self) ->None:
         while True:
-            time_remaining = self.time_remaining(self.schedule, self.is_shuted(self.schedule))
+            _time_remaining = self.time_remaining(self.schedule, self.is_shuted(self.schedule))
             self.draw.rectangle((0, 0, 129, 129), outline=1)
-            self.draw.text((15, 58), "{0}".format(time_remaining), fill=1, font=self.font)
+            self.draw.text((15, 58), "{0}".format(_time_remaining), fill=1, font=self.font)
             self.device.display(self.img)
-            print(time_remaining)
+            print(_time_remaining, end = '\r')   
             await asyncio.sleep(1)
 
 

@@ -13,21 +13,21 @@ async def main():
         api_id = int(config['TelegramClient']['api_id'])
         api_hash = config['TelegramClient']['api_hash']
         source = int(config['TelegramClient']['source'])
-        shutdown_query = config['TelegramClient']['shutdown_query']
+        outage_query = config['TelegramClient']['outage_query']
         message_pattern = config['TelegramClient']['message_pattern']
     except:
         exit('Wrong config format')
 
     # Setup raspberry lcd display timer
-    shutdown_timer = display.ShutdownTimer()
+    outage_timer = display.OutageTimer()
 
     # Start timer 
-    asyncio.create_task(shutdown_timer.display_time_remaining())
+    asyncio.create_task(outage_timer.display_time_remaining())
 
 
     # Request for shutdown scheduler
-    async for shutdown_schedule in mh.get_shutdown_periods(api_id,api_hash,source,shutdown_query,message_pattern):
-        shutdown_timer.set_schedule(shutdown_schedule)
+    async for outage_schedule in mh.get_outage_periods(api_id,api_hash,source,outage_query,message_pattern):
+        outage_timer.set_schedule(outage_schedule)
 
 
 

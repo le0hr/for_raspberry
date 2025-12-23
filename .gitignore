@@ -1,1 +1,6 @@
 config.cfg
+virtenv
+.vscode
+__pycache__
+anon.session
+anon.sesion-journal

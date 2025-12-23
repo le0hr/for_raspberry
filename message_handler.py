@@ -3,7 +3,7 @@ import asyncio
 import re
 import time
 
-async def get_shutdown_periods(api_id: int, api_hash: str, source: str, shutdown_query: str, message_pattern: str) -> str:
+async def get_outage_periods(api_id: int, api_hash: str, source: str, outage_query: str, message_pattern: str) -> str:
     client = tl.TelegramClient('anon', api_id, api_hash)
     queue = asyncio.Queue()
 
@@ -19,10 +19,10 @@ async def get_shutdown_periods(api_id: int, api_hash: str, source: str, shutdown
     # Message reader
     while client.is_connected():
         msg = await queue.get()
-        a = r"(?m)^" + re.escape(shutdown_query) + r".*$"
-        shutdown_period = re.search(r"(?m)^" + re.escape(shutdown_query) + r".*$", msg.message)
-        shutdown_period = [i.split(' - ') for i in shutdown_period.group(0)[4:].split(', ')]
-        yield shutdown_period  # Returns message when schedulers updated
+        a = r"(?m)^" + re.escape(outage_query) + r".*$"
+        outage_period = re.search(r"(?m)^" + re.escape(outage_query) + r".*$", msg.message)
+        outage_period = [i.split(' - ') for i in outage_period.group(0)[4:].split(', ')]
+        yield outage_period  # Returns message when schedulers updated
     
 
     
