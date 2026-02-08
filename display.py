@@ -18,8 +18,7 @@ class OutageTimer:
             self.serial,
             width=130,
             height=130,
-            h_offset=1,
-            v_offset=2,
+
             rotate=0
         )
         self.img = Image.new("1", (130, 130), 0)   # 0 = чорний
@@ -34,6 +33,7 @@ class OutageTimer:
     # Сheck if curently in period
     def is_shuted(self, period: str) -> bool:
         _now = dt.now().time()
+        print(p)
         for i in period:
             _start, _end = i
 
