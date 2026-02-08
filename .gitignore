@@ -1,5 +1,4 @@
-config.cfg
-virtenv
+venv
 .vscode
 __pycache__
 anon.session
