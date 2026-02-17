@@ -19,10 +19,12 @@ async def get_outage_periods(api_id: int, api_hash: str, source: str, outage_que
     # Message reader
     while client.is_connected():
         msg = await queue.get()
-        a = r"(?m)^" + re.escape(outage_query) + r".*$"
-        outage_period = re.search(r"(?m)^" + re.escape(outage_query) + r".*$", msg.message)
-        outage_period = [i.split(' - ') for i in outage_period.group(0)[4:].split(', ')]
-        yield outage_period  # Returns message when schedulers updated
+
+        match = re.search(r"6\.1:(.*?)(?=\d\.\d:|$)", msg.message)
+        queue_content = match.group(1)
+        intervals = re.findall(r"(\d{2}:\d{2})\s*[–-]\s*(\d{2}:\d{2})", queue_content)
+        outage_period = [list(i) for i in intervals]
+        yield outage_period  
     
 
     
